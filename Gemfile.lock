@@ -58,7 +58,7 @@ PLATFORMS
 DEPENDENCIES
   bitvavo!
   rake (~> 13.0)
-  rspec (~> 3.0)
+  rspec (~> 3.12)
   standard (~> 1.24)
 
 BUNDLED WITH
