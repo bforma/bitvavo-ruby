@@ -59,7 +59,7 @@ DEPENDENCIES
   bitvavo!
   rake (~> 13.0)
   rspec (~> 3.0)
-  standard (~> 1.3)
+  standard (~> 1.24)
 
 BUNDLED WITH
    2.4.1
