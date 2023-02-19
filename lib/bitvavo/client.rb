@@ -9,15 +9,22 @@ module Bitvavo
     end
 
     def time
-      public_connection
+      connection
         .get("time")
         .body["time"]
     end
 
+    def account
+      connection
+        .get("account")
+        .body
+    end
+
     private
 
-    def public_connection
+    def connection
       Faraday.new(@base_url) do |f|
+        f.use Bitvavo::Authentication
         f.response :json
       end
     end
