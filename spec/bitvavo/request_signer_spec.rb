@@ -3,11 +3,11 @@ RSpec.describe Bitvavo::RequestSigner do
     expect(
       Bitvavo::RequestSigner
         .sign_request(
-          "bitvavo",
-          1548172481125,
-          "POST",
-          "/v2/order",
-          '{"market":"BTC-EUR","side":"buy","price":"5000","amount":"1.23","orderType":"limit"}'
+          secret: "bitvavo",
+          timestamp: 1548172481125,
+          method: "POST",
+          path: "/v2/order",
+          body: '{"market":"BTC-EUR","side":"buy","price":"5000","amount":"1.23","orderType":"limit"}'
         )
     ).to eq("44d022723a20973a18f7ee97398b9fdd405d2d019c8d39e24b8cc0dcb39ca016")
   end
@@ -16,17 +16,25 @@ RSpec.describe Bitvavo::RequestSigner do
     expect(
       Bitvavo::RequestSigner
         .sign_request(
-          "bitvavo",
-          1548172481125,
-          :post,
-          "/v2/order",
-          '{"market":"BTC-EUR","side":"buy","price":"5000","amount":"1.23","orderType":"limit"}'
+          secret: "bitvavo",
+          timestamp: 1548172481125,
+          method: :post,
+          path: "/v2/order",
+          body: '{"market":"BTC-EUR","side":"buy","price":"5000","amount":"1.23","orderType":"limit"}'
         )
     ).to eq("44d022723a20973a18f7ee97398b9fdd405d2d019c8d39e24b8cc0dcb39ca016")
   end
 
   it "fails when no API secret is configured" do
-    expect { Bitvavo::RequestSigner.sign_request(nil, 123, "GET", "/time", "") }
+    expect do
+      Bitvavo::RequestSigner.sign_request(
+        secret: nil,
+        timestamp: 123,
+        method: "GET",
+        path: "/time",
+        body: ""
+      )
+    end
       .to raise_error("No API secret configured")
   end
 end
