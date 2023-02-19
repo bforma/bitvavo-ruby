@@ -14,6 +14,14 @@ module Bitvavo
         .body["time"]
     end
 
+    def markets(market = nil)
+      connection
+        .get("markets") do |req|
+          req.params["market"] = market if market
+        end
+        .body
+    end
+
     def account
       connection
         .get("account")

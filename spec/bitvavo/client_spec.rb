@@ -16,6 +16,96 @@ RSpec.describe Bitvavo::Client do
     end
   end
 
+  describe "#markets" do
+    it "returns information on the markets" do
+      stub_request(:get, "https://api.bitvavo.com/v2/markets")
+        .to_return(
+          status: 200,
+          body: <<~JSON,
+            [
+              {
+                "market": "BTC-EUR",
+                "status": "trading",
+                "base": "BTC",
+                "quote": "EUR",
+                "pricePrecision": "5",
+                "minOrderInQuoteAsset": "10",
+                "minOrderInBaseAsset": "0.001",
+                "orderTypes": [
+                  "market",
+                  "limit",
+                  "stopLoss",
+                  "stopLossLimit",
+                  "takeProfit",
+                  "takeProfitLimit"
+                ]
+              }
+            ]
+          JSON
+          headers: {"Content-Type": "application/json; charset=utf-8"}
+        )
+
+      expect(Bitvavo::Client.new.markets).to eq(
+        [
+          {
+            "market" => "BTC-EUR",
+            "status" => "trading",
+            "base" => "BTC",
+            "quote" => "EUR",
+            "pricePrecision" => "5",
+            "minOrderInQuoteAsset" => "10",
+            "minOrderInBaseAsset" => "0.001",
+            "orderTypes" => %w[market limit stopLoss stopLossLimit takeProfit takeProfitLimit]
+          }
+        ]
+      )
+    end
+
+    it "returns information on a specific market" do
+      stub_request(:get, "https://api.bitvavo.com/v2/markets?market=ETH-EUR")
+        .to_return(
+          status: 200,
+          body: <<~JSON,
+            [
+              {
+                "market": "ETH-EUR",
+                "status": "trading",
+                "base": "ETH",
+                "quote": "EUR",
+                "pricePrecision": "5",
+                "minOrderInQuoteAsset": "10",
+                "minOrderInBaseAsset": "0.001",
+                "orderTypes": [
+                  "market",
+                  "limit",
+                  "stopLoss",
+                  "stopLossLimit",
+                  "takeProfit",
+                  "takeProfitLimit"
+                ]
+              }
+            ]
+          JSON
+          headers: {"Content-Type": "application/json; charset=utf-8"}
+        )
+
+      expect(Bitvavo::Client.new.markets("ETH-EUR")).to eq(
+        [
+          {
+            "market" => "ETH-EUR",
+            "status" => "trading",
+            "base" => "ETH",
+            "quote" => "EUR",
+            "pricePrecision" => "5",
+            "minOrderInQuoteAsset" => "10",
+            "minOrderInBaseAsset" => "0.001",
+            "orderTypes" => %w[market limit stopLoss stopLossLimit takeProfit takeProfitLimit]
+          }
+        ]
+      )
+    end
+  end
+
   describe "#account" do
     it "returns the current fees for this account" do
       Bitvavo.configure do |config|
