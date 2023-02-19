@@ -1,5 +1,7 @@
 require "faraday"
 
+require_relative "authentication"
+
 module Bitvavo
   class Client
     def initialize(base_url: Bitvavo.configuration.base_url)
