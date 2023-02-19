@@ -106,6 +106,102 @@ RSpec.describe Bitvavo::Client do
     end
   end
 
+  describe "#assets" do
+    it "returns information on the supported assets" do
+      stub_request(:get, "https://api.bitvavo.com/v2/assets")
+        .to_return(
+          status: 200,
+          body: <<~JSON,
+            [
+              {
+                "symbol": "BTC",
+                "name": "Bitcoin",
+                "decimals": 8,
+                "depositFee": "0",
+                "depositConfirmations": 10,
+                "depositStatus": "OK",
+                "withdrawalFee": "0.2",
+                "withdrawalMinAmount": "0.2",
+                "withdrawalStatus": "OK",
+                "networks": [
+                  "Mainnet"
+                ],
+                "message": ""
+              }
+            ]
+          JSON
+          headers: {"Content-Type": "application/json; charset=utf-8"}
+        )
+
+      expect(Bitvavo::Client.new.assets).to eq(
+        [
+          {
+            "symbol" => "BTC",
+            "name" => "Bitcoin",
+            "decimals" => 8,
+            "depositFee" => "0",
+            "depositConfirmations" => 10,
+            "depositStatus" => "OK",
+            "withdrawalFee" => "0.2",
+            "withdrawalMinAmount" => "0.2",
+            "withdrawalStatus" => "OK",
+            "networks" => [
+              "Mainnet"
+            ],
+            "message" => ""
+          }
+        ]
+      )
+    end
+
+    it "returns information on a specific asset" do
+      stub_request(:get, "https://api.bitvavo.com/v2/assets?symbol=ETH")
+        .to_return(
+          status: 200,
+          body: <<~JSON,
+            [
+              {
+                "symbol": "ETH",
+                "name": "Ethereum",
+                "decimals": 8,
+                "depositFee": "0",
+                "depositConfirmations": 10,
+                "depositStatus": "OK",
+                "withdrawalFee": "0.2",
+                "withdrawalMinAmount": "0.2",
+                "withdrawalStatus": "OK",
+                "networks": [
+                  "Mainnet"
+                ],
+                "message": ""
+              }
+            ]
+          JSON
+          headers: {"Content-Type": "application/json; charset=utf-8"}
+        )
+
+      expect(Bitvavo::Client.new.assets("ETH")).to eq(
+        [
+          {
+            "symbol" => "ETH",
+            "name" => "Ethereum",
+            "decimals" => 8,
+            "depositFee" => "0",
+            "depositConfirmations" => 10,
+            "depositStatus" => "OK",
+            "withdrawalFee" => "0.2",
+            "withdrawalMinAmount" => "0.2",
+            "withdrawalStatus" => "OK",
+            "networks" => [
+              "Mainnet"
+            ],
+            "message" => ""
+          }
+        ]
+      )
+    end
+  end
+
   describe "#account" do
     it "returns the current fees for this account" do
       Bitvavo.configure do |config|

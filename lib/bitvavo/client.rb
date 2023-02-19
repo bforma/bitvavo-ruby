@@ -22,6 +22,14 @@ module Bitvavo
         .body
     end
 
+    def assets(symbol = nil)
+      connection
+        .get("assets") do |req|
+          req.params["symbol"] = symbol if symbol
+        end
+        .body
+    end
+
     def account
       connection
         .get("account")
