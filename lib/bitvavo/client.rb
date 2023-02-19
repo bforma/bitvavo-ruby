@@ -9,13 +9,13 @@ module Bitvavo
     end
 
     def time
-      connection
+      public_connection
         .get("time")
         .body["time"]
     end
 
     def markets(market = nil)
-      connection
+      public_connection
         .get("markets") do |req|
           req.params["market"] = market if market
         end
@@ -23,7 +23,7 @@ module Bitvavo
     end
 
     def assets(symbol = nil)
-      connection
+      public_connection
         .get("assets") do |req|
           req.params["symbol"] = symbol if symbol
         end
@@ -31,16 +31,24 @@ module Bitvavo
     end
 
     def account
-      connection
+      private_connection
         .get("account")
         .body
     end
 
     private
 
-    def connection
+    def public_connection
+      connection(private: false)
+    end
+
+    def private_connection
+      connection(private: true)
+    end
+
+    def connection(private:)
       Faraday.new(@base_url) do |f|
-        f.use Bitvavo::Authentication
+        f.use Bitvavo::Authentication if private
 
         f.response :raise_error
         f.response :json
