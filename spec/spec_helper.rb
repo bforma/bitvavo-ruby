@@ -13,6 +13,13 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.before do
+    Bitvavo.configure do |config|
+      config.api_key = "key"
+      config.api_secret = "secret"
+    end
+  end
+
   config.after do
     Timecop.return
   end

@@ -1,11 +1,4 @@
 RSpec.describe Bitvavo::Authentication do
-  before do
-    Bitvavo.configure do |config|
-      config.api_key = "key"
-      config.api_secret = "secret"
-    end
-  end
-
   it "sets authentication headers" do
     Timecop.freeze(Time.at(1676790988.943))
 
