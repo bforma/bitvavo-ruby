@@ -57,6 +57,29 @@ RSpec.describe Bitvavo::Client do
     end
   end
 
+  describe "authentication" do
+    it "adds the API key and signature to the request" do
+      Timecop.freeze(Time.at(1676790988.943))
+
+      stub_request(:get, "https://api.bitvavo.com/v2/account")
+        .with(
+          headers: {
+            "Accept" => "*/*",
+            "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+            "Bitvavo-Access-Key" => "key",
+            "Bitvavo-Access-Signature" => "124299941c9ed3029d1f4b72f7f445d47fbd9ba568bf68ed55e0ed338e668c79",
+            "Bitvavo-Access-Timestamp" => "1676790988943",
+            "User-Agent" => "Faraday v2.7.4"
+          }
+        )
+        .to_return(
+          status: 200
+        )
+
+      Bitvavo::Client.new.account
+    end
+  end
+
   describe "error handling" do
     it "raises an error when the API key is invalid" do
       stub_request(:get, "https://api.bitvavo.com/v2/time")
