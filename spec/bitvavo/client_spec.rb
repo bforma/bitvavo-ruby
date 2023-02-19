@@ -289,6 +289,51 @@ RSpec.describe Bitvavo::Client do
         )
       end
     end
+
+    describe "#trades" do
+      it "returns historic trades for your account" do
+        stub_request(:get, "https://api.bitvavo.com/v2/trades?market=BTC-EUR")
+          .to_return(
+            status: 200,
+            body: <<~JSON,
+              [
+                {
+                  "id": "108c3633-0276-4480-a902-17a01829deae",
+                  "orderId": "1d671998-3d44-4df4-965f-0d48bd129a1b",
+                  "timestamp": 1542967486256,
+                  "market": "BTC-EUR",
+                  "side": "buy",
+                  "amount": "0.005",
+                  "price": "5000.1",
+                  "taker": true,
+                  "fee": "0.03",
+                  "feeCurrency": "EUR",
+                  "settled": true
+                }
+              ]
+            JSON
+            headers: {"Content-Type": "application/json; charset=utf-8"}
+          )
+
+        expect(Bitvavo::Client.new.trades("BTC-EUR")).to eq(
+          [
+            {
+              "id" => "108c3633-0276-4480-a902-17a01829deae",
+              "orderId" => "1d671998-3d44-4df4-965f-0d48bd129a1b",
+              "timestamp" => 1542967486256,
+              "market" => "BTC-EUR",
+              "side" => "buy",
+              "amount" => "0.005",
+              "price" => "5000.1",
+              "taker" => true,
+              "fee" => "0.03",
+              "feeCurrency" => "EUR",
+              "settled" => true
+            }
+          ]
+        )
+      end
+    end
   end
 
   describe "authentication" do

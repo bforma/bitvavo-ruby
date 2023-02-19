@@ -44,6 +44,14 @@ module Bitvavo
         .body
     end
 
+    def trades(market)
+      private_connection
+        .get("trades") do |req|
+          req.params["market"] = market
+        end
+        .body
+    end
+
     private
 
     def public_connection
