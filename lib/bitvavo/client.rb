@@ -25,6 +25,7 @@ module Bitvavo
     def connection
       Faraday.new(@base_url) do |f|
         f.use Bitvavo::Authentication
+
         f.response :raise_error
         f.response :json
       end
