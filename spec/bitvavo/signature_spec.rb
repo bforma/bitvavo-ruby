@@ -1,4 +1,4 @@
-RSpec.describe "Bitvavo::Signature" do
+RSpec.describe Bitvavo::Signature do
   it "creates a signature" do
     expect(
       Bitvavo::Signature
