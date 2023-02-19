@@ -36,6 +36,14 @@ module Bitvavo
         .body
     end
 
+    def balance(symbol = nil)
+      private_connection
+        .get("balance") do |req|
+          req.params["symbol"] = symbol if symbol
+        end
+        .body
+    end
+
     private
 
     def public_connection

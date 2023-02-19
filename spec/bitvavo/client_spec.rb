@@ -233,6 +233,62 @@ RSpec.describe Bitvavo::Client do
         )
       end
     end
+
+    describe "#balance" do
+      it "returns the current balance for this account" do
+        stub_request(:get, "https://api.bitvavo.com/v2/balance")
+          .to_return(
+            status: 200,
+            body: <<~JSON,
+              [
+                {
+                  "symbol": "BTC",
+                  "available": "1.57593193",
+                  "inOrder": "0.74832374"
+                }
+              ]
+            JSON
+            headers: {"Content-Type": "application/json; charset=utf-8"}
+          )
+
+        expect(Bitvavo::Client.new.balance).to eq(
+          [
+            {
+              "symbol" => "BTC",
+              "available" => "1.57593193",
+              "inOrder" => "0.74832374"
+            }
+          ]
+        )
+      end
+
+      it "returns the current balance of a specific asset for this account" do
+        stub_request(:get, "https://api.bitvavo.com/v2/balance?symbol=ETH")
+          .to_return(
+            status: 200,
+            body: <<~JSON,
+              [
+                {
+                  "symbol": "ETH",
+                  "available": "1.57593193",
+                  "inOrder": "0.74832374"
+                }
+              ]
+            JSON
+            headers: {"Content-Type": "application/json; charset=utf-8"}
+          )
+
+        expect(Bitvavo::Client.new.balance("ETH")).to eq(
+          [
+            {
+              "symbol" => "ETH",
+              "available" => "1.57593193",
+              "inOrder" => "0.74832374"
+            }
+          ]
+        )
+      end
+    end
   end
 
   describe "authentication" do
