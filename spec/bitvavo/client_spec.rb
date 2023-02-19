@@ -11,7 +11,11 @@ RSpec.describe Bitvavo::Client do
       stub_request(:get, "https://api.bitvavo.com/v2/time")
         .to_return(
           status: 200,
-          body: '{"time": 1539180275424}',
+          body: <<~JSON,
+            {
+              "time": 1539180275424
+            }
+          JSON
           headers: {"Content-Type": "application/json; charset=utf-8"}
         )
 
