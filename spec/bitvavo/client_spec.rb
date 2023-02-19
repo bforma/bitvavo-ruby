@@ -207,11 +207,6 @@ RSpec.describe Bitvavo::Client do
   context "private" do
     describe "#account" do
       it "returns the current fees for this account" do
-        Bitvavo.configure do |config|
-          config.api_key = "key"
-          config.api_secret = "secret"
-        end
-
         stub_request(:get, "https://api.bitvavo.com/v2/account")
           .to_return(
             status: 200,
