@@ -56,4 +56,22 @@ RSpec.describe Bitvavo::Client do
       )
     end
   end
+
+  describe "error handling" do
+    it "raises an error when the API key is invalid" do
+      stub_request(:get, "https://api.bitvavo.com/v2/time")
+        .to_return(
+          status: 403,
+          body: <<~JSON,
+            {
+               "errorCode": 305,
+               "error": "No active API key found."
+            }
+          JSON
+          headers: {"Content-Type": "application/json; charset=utf-8"}
+        )
+
+      expect { Bitvavo::Client.new.time }.to raise_error(Faraday::ForbiddenError)
+    end
+  end
 end
