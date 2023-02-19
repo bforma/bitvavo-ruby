@@ -1,6 +1,6 @@
 module Bitvavo
-  class Signature
-    def self.create(secret, timestamp, method, path, body)
+  class RequestSigner
+    def self.sign_request(secret, timestamp, method, path, body)
       fail "No API secret configured" unless secret
 
       OpenSSL::HMAC.hexdigest(

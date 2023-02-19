@@ -1,6 +1,6 @@
 require_relative "bitvavo/version"
 require_relative "bitvavo/configuration"
-require_relative "bitvavo/signature"
+require_relative "bitvavo/request_signer"
 require_relative "bitvavo/client"
 
 module Bitvavo
