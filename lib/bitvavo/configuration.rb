@@ -15,5 +15,7 @@ module Bitvavo
     include ActiveSupport::Configurable
 
     config_accessor(:base_url) { "https://api.bitvavo.com/v2" }
+    config_accessor :api_key
+    config_accessor :api_secret
   end
 end
