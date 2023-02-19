@@ -6,7 +6,7 @@ module Bitvavo
       OpenSSL::HMAC.hexdigest(
         OpenSSL::Digest.new("sha256"),
         secret,
-        "#{timestamp}#{method}#{path}#{body}"
+        "#{timestamp}#{method.to_s.upcase}#{path}#{body}"
       )
     end
   end
