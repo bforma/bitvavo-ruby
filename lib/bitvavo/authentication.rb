@@ -12,6 +12,7 @@ module Bitvavo
         timestamp: timestamp,
         method: env.method,
         path: env.url.path,
+        query: env.url.query,
         body: env.body
       )
       env.request_headers["Bitvavo-Access-Timestamp"] = timestamp.to_s
